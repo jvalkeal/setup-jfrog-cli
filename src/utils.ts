@@ -19,18 +19,24 @@ export class Utils {
         }
         let fileName: string = Utils.getCliExecutableName();
         let cliDir: string = toolCache.find(fileName, version);
+        core.info(`xxx1 ${fileName} ${cliDir}`);
         if (cliDir) {
+            core.info(`xxx2 ${cliDir}`);
             core.addPath(cliDir);
+            core.info(`xxx3 ${path.join(cliDir, fileName)}`);
             return path.join(cliDir, fileName);
         }
         let url: string = Utils.getCliUrl(version, fileName);
         let downloadDir: string = await toolCache.downloadTool(url);
+        core.info(`xxx4 ${downloadDir}`);
         cliDir = await toolCache.cacheFile(downloadDir, fileName, fileName, version);
         let cliPath: string = path.join(cliDir, fileName);
+        core.info(`xxx5 ${cliPath}`);
         if (!Utils.isWindows()) {
             fs.chmodSync(cliPath, 0o555);
         }
         core.addPath(cliDir);
+        core.info(`xxx6 ${cliPath}`);
         return cliPath;
     }
 
